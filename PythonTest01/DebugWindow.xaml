@@ -1,0 +1,38 @@
+﻿<Window x:Class="PythonTest01.DebugWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pythonTest01="clr-namespace:PythonTest01"
+        xmlns:syntaxeditor="http://schemas.actiprosoftware.com/winfx/xaml/syntaxeditor"
+        Title="DebugWindow" Height="800" Width="600" 
+        Closed="DebugWindow_OnClosed"
+        Closing="DebugWindow_OnClosing"
+        Loaded="DebugWindow_OnLoaded">
+    <Window.CommandBindings>
+        <CommandBinding Command="pythonTest01:DebugCommands.StepIn"  Executed="StepInExecuted"/>
+        <!--<CommandBinding Command="pythonTest01:DebugCommands.StepOut"  Executed="StepOutExecuted"/>-->
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="pythonTest01:DebugCommands.StepIn" Key="S"/>
+        <!--<KeyBinding Command="pythonTest01:DebugCommands.StepOut" Key="O"/>-->
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="Step">
+                <MenuItem Command="pythonTest01:DebugCommands.StepIn" InputGestureText="S"></MenuItem>
+                <MenuItem Command="pythonTest01:DebugCommands.StepOver"></MenuItem>
+                <!--<MenuItem Command="pythonTest01:DebugCommands.StepOut" InputGestureText="O"></MenuItem>-->
+            </MenuItem>
+            <TextBlock x:Name="dbgStatus"></TextBlock>
+        </Menu>
+        <syntaxeditor:SyntaxEditor x:Name="syntaxEditor" Grid.Row="1" 
+            WordWrapMode="Word" 
+            IsIndicatorMarginVisible="True" 
+            IsLineNumberMarginVisible="True">
+            <syntaxeditor:EditorDocument x:Name="document" IsReadOnly="True"></syntaxeditor:EditorDocument>
+        </syntaxeditor:SyntaxEditor>
+    </Grid>
+</Window>

@@ -1,0 +1,94 @@
+﻿<Window xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"  
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+        xmlns:syntaxeditor="http://schemas.actiprosoftware.com/winfx/xaml/syntaxeditor" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pythonTest01="clr-namespace:PythonTest01"
+        dx:ThemeManager.ThemeName="None"
+        x:Class="PythonTest01.MainWindow"
+        Title="MainWindow" Height="900" Width="1200" Loaded="MainWindow_OnLoaded" Closing="MainWindow_OnClosing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <dxb:ToolBarControl Grid.Row="0">
+            <dxb:BarButtonItem ItemClick="OnOpenFileButtonClick" Glyph="Resources/Images/OpenFile.png"/>
+            <dxb:BarButtonItem ItemClick="OnSaveFileButtonClick" Glyph="Resources/Images/save.png"/>
+            <dxb:BarItemSeparator/>
+            <dxb:BarButtonItem ItemClick="OnToggleBreakpointButtonClick" Glyph="/Resources/Images/Breakpoint16.png"/>
+            <dxb:BarButtonItem ItemClick="OnToggleBreakpointEnabledButtonClick" Glyph="Resources/Images/BreakpointToggleEnabled16.png"/>
+            <dxb:BarButtonItem ItemClick="OnClearBreakpointsButtonClick" Glyph="/Resources/Images/Delete16.png"/>           
+            <dxb:BarButtonItem ItemClick="OnStartDebuggingButtonClick" Glyph="/Resources/Images/Start16.png"/>
+            <dxb:BarItemSeparator/>
+            <dxb:BarButtonItem ItemClick="OnStopDebuggingButtonClick" Glyph="/Resources/Images/Stop16.png" x:Name="stopDebuggingButton"/>
+            <dxb:BarButtonItem ItemClick="OnExecuteButtonClick"  Glyph="/Resources/Images/Executive.png" x:Name="ExecuteButton"/>
+        </dxb:ToolBarControl>
+        <syntaxeditor:SyntaxEditor x:Name="syntaxEditor" Grid.Row="1"
+            WordWrapMode="Word" 
+            IsIndicatorMarginVisible="True" 
+            IsLineNumberMarginVisible="True"
+			DocumentParseDataChanged="OnCodeEditorDocumentParseDataChanged" 
+			UserInterfaceUpdate="OnCodeEditorUserInterfaceUpdate"
+			ViewSelectionChanged="OnCodeEditorViewSelectionChanged">
+            <syntaxeditor:EditorDocument x:Name="document"></syntaxeditor:EditorDocument>
+        </syntaxeditor:SyntaxEditor>
+        <GridSplitter Height="5" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <dx:DXTabControl Grid.Row="3" Padding="1" Margin="1" x:Name="TabControl">
+            <dx:DXTabControl.View>
+                <dx:TabControlScrollView HeaderLocation="Bottom" HeaderOrientation="Horizontal"/>
+            </dx:DXTabControl.View>
+            <dx:DXTabItem Header="Error">
+                <Grid>
+                    <ListView x:Name="errorListView" BorderThickness="0" MouseDoubleClick="OnErrorListViewDoubleClick">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Line" Width="40" DisplayMemberBinding="{Binding Path=PositionRange.StartPosition.DisplayLine}" />
+                            <GridViewColumn Header="Char" Width="40" DisplayMemberBinding="{Binding Path=PositionRange.StartPosition.DisplayCharacter}"/>
+                            <GridViewColumn Header="Description" Width="300" DisplayMemberBinding="{Binding Path=Description}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                </Grid>
+            </dx:DXTabItem>
+            <dx:DXTabItem Header="OutPut">
+                <Grid>
+                    <ListView x:Name="valueListView" BorderThickness="0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="VarName" DisplayMemberBinding="{Binding Path=VarName}" />
+                                <GridViewColumn Header="Value"  DisplayMemberBinding="{Binding Path= Value}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </dx:DXTabItem>
+            <dx:DXTabItem Header="OutPut">
+                <Grid>
+                    <!--<ListView x:Name="OutPutListView" BorderThickness="0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Time" Width="150" DisplayMemberBinding="{Binding Path=CompletedTime}" />
+                                <GridViewColumn Header="Message" Width="400" DisplayMemberBinding="{Binding Path= CodeResult}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>-->
+                    <TextBox x:Name="OutputTextBox"  IsReadOnly="True" Focusable="False"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" TextWrapping="Wrap" BorderThickness="0"/>
+                </Grid>
+            </dx:DXTabItem>
+            <dx:DXTabItem Header="OutPut">
+                <Grid>
+                    <ListBox x:Name="lbThings"/>
+                </Grid>
+            </dx:DXTabItem>
+        </dx:DXTabControl>
+        <dxb:StatusBarControl Grid.Row="4">
+            <dxb:BarStaticItem x:Name="linePanel" ItemMinWidth="40" Content="Ln 1" Alignment="Far" />
+            <dxb:BarStaticItem x:Name="columnPanel" ItemMinWidth="40"  Content="Col 1" Alignment="Far" />
+            <dxb:BarStaticItem x:Name="characterPanel" ItemMinWidth="40" Content="Ch 1" Alignment="Far" />
+        </dxb:StatusBarControl>
+    </Grid>
+</Window>
